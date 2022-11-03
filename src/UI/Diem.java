@@ -3,11 +3,13 @@ package UI;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Dashboard {
+public class Diem {
     public JPanel render() {
+
         JPanel jLabelOutlet = new JPanel();
-        JLabel jLabel = new JLabel("Dashboard");
+        JLabel jLabel = new JLabel("Diem");
         jLabelOutlet.add(jLabel);
         return jLabelOutlet;
+
     }
 }
