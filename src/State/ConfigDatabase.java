@@ -3,9 +3,9 @@ package State;
 import java.sql.*;
 
 public class ConfigDatabase {
-    Statement statement;
+    private static Statement statement;
 
-    ConfigDatabase() {
+    public void ConnectDatabase() {
 
         try {
             // Connection conn =
@@ -25,4 +25,9 @@ public class ConfigDatabase {
         }
 
     }
+
+    public Statement getStatement() {
+        return statement;
+    }
+
 }

@@ -3,10 +3,14 @@ package UI;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.plaf.DimensionUIResource;
 
-import java.awt.GridLayout;
+import State.KhoaState;
+import models.KhoaModel;
+
+import java.util.ArrayList;
 import java.awt.FlowLayout;
 
 public class Khoa {
@@ -20,21 +24,17 @@ public class Khoa {
         JPanel jPanelHeader = new JPanel();
         JLabel jLabel = new JLabel("Khoa");
         jPanelHeader.add(jLabel);
-        jPanelHeader.setPreferredSize(new DimensionUIResource(1200, 100));
 
         // Body
         JPanel jPanelBody = new JPanel();
-        jPanelBody.setLayout(new GridLayout(1, 2));
-        jPanelBody.setPreferredSize(new DimensionUIResource(1200, 700));
+        jPanelBody.setLayout(new FlowLayout());
 
         // left
         JPanel jPanelLeft = new JPanel();
         jPanelLeft.setLayout(new FlowLayout());
-        jPanelLeft.setPreferredSize(new DimensionUIResource(400, 700));
         JLabel jLabelTenKhoa = new JLabel("Ten khoa");
 
         JTextField jTextFieldTenKhoa = new JTextField();
-        jTextFieldTenKhoa.setPreferredSize(new DimensionUIResource(300, 20));
 
         JButton jButtonAddKhoa = new JButton("Them khoa");
 
@@ -45,16 +45,32 @@ public class Khoa {
         // right
         JPanel jPanelRight = new JPanel();
         jPanelRight.setLayout(new FlowLayout());
-        jPanelRight.setPreferredSize(new DimensionUIResource(800, 700));
 
         JLabel jLabelRight = new JLabel("Ten Khoa");
 
-        jPanelRight.add(jLabelRight);
+        KhoaState khoaState = new KhoaState();
+        ArrayList<KhoaModel> list = khoaState.view();
 
-        jPanelBody.add(jPanelLeft);
+        Object[][] row = new Object[100][2];
+        String col[] = { "id", "tenkhoa" };
+
+        for (int i = 0; i < list.size(); i++) {
+            row[i][0] = list.get(i).getMa();
+            row[i][1] = list.get(i).getTenKhoa();
+        }
+        JTable JTableKhoa = new JTable(row, col);
+
+        JScrollPane JScrollPane = new JScrollPane();
+        JTableKhoa.setBounds(30, 40, 200, 300);
+        JScrollPane.add(JTableKhoa);
+
+        jPanelRight.add(jLabelRight);
+        jPanelRight.add(JScrollPane);
+
+        // jPanelBody.add(jPanelLeft);
         jPanelBody.add(jPanelRight);
 
-        jLabelOutlet.add(jPanelHeader);
+        // jLabelOutlet.add(jPanelHeader);
         jLabelOutlet.add(jPanelBody);
         return jLabelOutlet;
 

@@ -5,14 +5,12 @@ import java.util.ArrayList;
 
 import models.KhoaModel;
 
-public class KhoaState {
-
+public class NganhState {
     Statement statement;
     public ArrayList<KhoaModel> khoaList = new ArrayList<>();
 
-    public KhoaState() {
-        ConfigDatabase configDatabase = new ConfigDatabase();
-        this.statement = configDatabase.getStatement();
+    NganhState(Statement statement) {
+        this.statement = statement;
     }
 
     // create
@@ -41,8 +39,8 @@ public class KhoaState {
             while (result.next()) {
                 KhoaModel khoa = new KhoaModel(result.getInt(1), result.getString(2));
                 khoaList.add(khoa);
+
             }
-            System.out.println("View success");
             return khoaList;
         } catch (SQLException ex) {
             System.out.println("Problem To Show Data");
