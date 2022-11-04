@@ -17,6 +17,7 @@ public class Home extends JFrame implements ActionListener {
     private Sinhvien sinhvien = new Sinhvien();
     private Mon mon = new Mon();
     private Khoa khoa = new Khoa();
+    private Nganh nganh = new Nganh();
 
     public Home() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,6 +30,7 @@ public class Home extends JFrame implements ActionListener {
         JButton KhoaMenu = new JButton("Khoa");
         JButton MonMenu = new JButton("Mon");
         JButton DiemMenu = new JButton("Diem");
+        JButton NganhMenu = new JButton("Nganh");
         JButton SinhvienMenu = new JButton("Sinhvien");
 
         // add action listener
@@ -37,10 +39,12 @@ public class Home extends JFrame implements ActionListener {
         MonMenu.addActionListener(this);
         DiemMenu.addActionListener(this);
         SinhvienMenu.addActionListener(this);
+        NganhMenu.addActionListener(this);
 
         // add to menu
         jPanelHeader.add(DashboardMenu);
         jPanelHeader.add(KhoaMenu);
+        jPanelHeader.add(NganhMenu);
         jPanelHeader.add(SinhvienMenu);
         jPanelHeader.add(MonMenu);
         jPanelHeader.add(DiemMenu);
@@ -49,10 +53,7 @@ public class Home extends JFrame implements ActionListener {
 
         // container all content
 
-        jPanelContent.add(dashboard.render());
-        JButton button = new JButton("TEST");
-        button.addActionListener(this);
-        jPanelContent.add(button);
+        jPanelContent.add(khoa.render());
         this.add(jPanelHeader);
         this.add(jPanelContent);
 
@@ -71,6 +72,10 @@ public class Home extends JFrame implements ActionListener {
             case "Khoa":
                 clearContent();
                 jPanelContent.add(khoa.render());
+                break;
+            case "Nganh":
+                clearContent();
+                jPanelContent.add(nganh.render());
                 break;
             case "Mon":
                 clearContent();
