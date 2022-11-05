@@ -4,7 +4,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 import java.awt.event.*;
 
@@ -23,7 +23,7 @@ public class Home extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Quan ly sinh vien");
         this.setSize(1200, 700);
-        this.setLayout(new GridLayout(2, 0));
+        this.setLayout(new FlowLayout());
 
         jPanelHeader.setSize(1200, 100);
         JButton DashboardMenu = new JButton("Dashboard");
@@ -53,7 +53,7 @@ public class Home extends JFrame implements ActionListener {
 
         // container all content
 
-        jPanelContent.add(khoa.render());
+        jPanelContent.add(dashboard.render());
         this.add(jPanelHeader);
         this.add(jPanelContent);
 

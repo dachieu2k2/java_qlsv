@@ -8,10 +8,9 @@ import models.KhoaModel;
 public class KhoaState {
 
     Statement statement;
-    public ArrayList<KhoaModel> khoaList = new ArrayList<>();
+    ConfigDatabase configDatabase = new ConfigDatabase();
 
     public KhoaState() {
-        ConfigDatabase configDatabase = new ConfigDatabase();
         this.statement = configDatabase.getStatement();
     }
 
@@ -30,14 +29,10 @@ public class KhoaState {
     // read
     public ArrayList<KhoaModel> view() {
         try {
+            ArrayList<KhoaModel> khoaList = new ArrayList<>();
+
             String insertquery = "select * from `khoa`";
             ResultSet result = statement.executeQuery(insertquery);
-            // while (result.next()) {
-            // System.out.println("ma " + result.getString(1));
-            // System.out.println("\ntenkhoa " + result.getString(2));
-            // System.out.println("\n");
-
-            // }
             while (result.next()) {
                 KhoaModel khoa = new KhoaModel(result.getInt(1), result.getString(2));
                 khoaList.add(khoa);
@@ -53,7 +48,7 @@ public class KhoaState {
     // update
     public void update(int id, String tenkhoa) {
         try {
-            String insertquery = String.format("UPDATE `khoa` set `tenkhoa`='%s' WHERE id = '%d'", tenkhoa,
+            String insertquery = String.format("UPDATE `khoa` set `tenkhoa`='%s' WHERE ma = '%d'", tenkhoa,
                     id);
             statement.executeUpdate(insertquery);
             System.out.println("Updated");
@@ -65,7 +60,7 @@ public class KhoaState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `khoa` WHERE id = '%d'", id);
+            String insertquery = String.format("DELETE FROM `khoa` WHERE ma = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -73,25 +68,24 @@ public class KhoaState {
         }
     }
 
-    public void SearchText(String s) {
+    public ArrayList<KhoaModel> SearchText(String s) {
         try {
+            ArrayList<KhoaModel> khoaList = new ArrayList<>();
             String insertquery = String
-                    .format("SELECT * FROM `khoa` WHERE locate('%s',name)",
+                    .format("SELECT * FROM `khoa` WHERE locate('%s',tenkhoa)",
                             s);
             ResultSet result = statement.executeQuery(insertquery);
-            while (result.next()) {
-                System.out.println("\n");
-                System.out.println("id " + result.getString(1));
-                System.out.println("Name " + result.getString(2));
-                System.out.println("Age " + result.getString(3));
-                System.out.println("created_At " + result.getString(4));
-                System.out.println("\n");
 
+            while (result.next()) {
+                KhoaModel khoa = new KhoaModel(result.getInt(1), result.getString(2));
+                khoaList.add(khoa);
             }
+            return khoaList;
 
         } catch (Exception e) {
             System.out.print(e.getMessage());
             System.out.print("\nProblem with data");
+            return null;
         }
     }
 }
