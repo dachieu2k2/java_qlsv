@@ -3,20 +3,22 @@ package State;
 import java.sql.*;
 import java.util.ArrayList;
 
-import models.KhoaModel;
+import models.NganhModel;
 
 public class NganhState {
-    Statement statement;
-    public ArrayList<KhoaModel> khoaList = new ArrayList<>();
 
-    NganhState(Statement statement) {
-        this.statement = statement;
+    Statement statement;
+    ConfigDatabase configDatabase = new ConfigDatabase();
+
+    public NganhState() {
+        this.statement = configDatabase.getStatement();
     }
 
     // create
-    public void insert(String tenkhoa) {
+    public void insert(String tennganh, int makhoa) {
         try {
-            String insertquery = String.format("INSERT INTO khoa(tenkhoa) VALUES ('%s')", tenkhoa);
+            String insertquery = String.format("INSERT INTO nganh(tennganh,makhoa) VALUES ('%s','%d')", tennganh,
+                    makhoa);
             statement.executeUpdate(insertquery);
             System.out.print("Inserted");
         } catch (Exception e) {
@@ -26,22 +28,19 @@ public class NganhState {
     }
 
     // read
-    public ArrayList<KhoaModel> view() {
+    public ArrayList<NganhModel> view() {
         try {
-            String insertquery = "select * from `khoa`";
+            ArrayList<NganhModel> nganhList = new ArrayList<>();
+
+            String insertquery = "SELECT * FROM `nganh` INNER JOIN khoa on khoa.ma = nganh.makhoa";
             ResultSet result = statement.executeQuery(insertquery);
-            // while (result.next()) {
-            // System.out.println("ma " + result.getString(1));
-            // System.out.println("\ntenkhoa " + result.getString(2));
-            // System.out.println("\n");
-
-            // }
             while (result.next()) {
-                KhoaModel khoa = new KhoaModel(result.getInt(1), result.getString(2));
-                khoaList.add(khoa);
-
+                NganhModel nganh = new NganhModel(result.getInt(1), result.getString(2), result.getInt(3),
+                        result.getString(5));
+                nganhList.add(nganh);
             }
-            return khoaList;
+            System.out.println("View success");
+            return nganhList;
         } catch (SQLException ex) {
             System.out.println("Problem To Show Data");
             return null;
@@ -49,9 +48,10 @@ public class NganhState {
     }
 
     // update
-    public void update(int id, String tenkhoa) {
+    public void update(int id, String tennganh, int makhoa) {
         try {
-            String insertquery = String.format("UPDATE `khoa` set `tenkhoa`='%s' WHERE id = '%d'", tenkhoa,
+            String insertquery = String.format("UPDATE `nganh` set `tennganh`='%s',`makhoa`='%d' WHERE ma = '%d';",
+                    tennganh, makhoa,
                     id);
             statement.executeUpdate(insertquery);
             System.out.println("Updated");
@@ -63,7 +63,7 @@ public class NganhState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `khoa` WHERE id = '%d'", id);
+            String insertquery = String.format("DELETE FROM `nganh` WHERE ma = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -71,25 +71,25 @@ public class NganhState {
         }
     }
 
-    public void SearchText(String s) {
+    public ArrayList<NganhModel> SearchText(String s) {
         try {
+            ArrayList<NganhModel> nganhList = new ArrayList<>();
             String insertquery = String
-                    .format("SELECT * FROM `khoa` WHERE locate('%s',name)",
+                    .format("SELECT * FROM `nganh` INNER JOIN khoa on khoa.ma = nganh.makhoa WHERE locate('%s',tennganh)",
                             s);
             ResultSet result = statement.executeQuery(insertquery);
-            while (result.next()) {
-                System.out.println("\n");
-                System.out.println("id " + result.getString(1));
-                System.out.println("Name " + result.getString(2));
-                System.out.println("Age " + result.getString(3));
-                System.out.println("created_At " + result.getString(4));
-                System.out.println("\n");
 
+            while (result.next()) {
+                NganhModel nganh = new NganhModel(result.getInt(1), result.getString(2), result.getInt(3),
+                        result.getString(5));
+                nganhList.add(nganh);
             }
+            return nganhList;
 
         } catch (Exception e) {
             System.out.print(e.getMessage());
             System.out.print("\nProblem with data");
+            return null;
         }
     }
 }

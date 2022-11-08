@@ -164,7 +164,7 @@ public class Khoa implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String ae = e.getActionCommand();
-        System.out.println(ae);
+
         switch (ae) {
             case "Them khoa":
                 khoaState.insert(jTextFieldTenKhoa.getText());
