@@ -74,7 +74,7 @@ public class Khoa implements ActionListener {
                     renderTable();
                 } else {
                     list = khoaState.SearchText(s);
-                    Object[][] row = new Object[list.size()][2];
+                    Object[][] row = new Object[list.size()][col.length];
 
                     for (int i = 0; i < list.size(); i++) {
                         row[i][0] = list.get(i).getMa();
@@ -135,7 +135,7 @@ public class Khoa implements ActionListener {
         JLabel jLabelRight = new JLabel("Bang");
         this.list = khoaState.view();
 
-        Object[][] row = new Object[list.size()][2];
+        Object[][] row = new Object[list.size()][col.length];
 
         for (int i = 0; i < list.size(); i++) {
             row[i][0] = list.get(i).getMa();
@@ -199,7 +199,7 @@ public class Khoa implements ActionListener {
 
     public void renderTable() {
         list = khoaState.view();
-        Object[][] row = new Object[list.size()][2];
+        Object[][] row = new Object[list.size()][col.length];
 
         for (int i = 0; i < list.size(); i++) {
             row[i][0] = list.get(i).getMa();

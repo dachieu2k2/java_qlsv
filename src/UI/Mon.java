@@ -73,7 +73,7 @@ public class Mon implements ActionListener {
                     renderTable();
                 } else {
                     list = monState.SearchText(s);
-                    Object[][] row = new Object[list.size()][2];
+                    Object[][] row = new Object[list.size()][col.length];
 
                     for (int i = 0; i < list.size(); i++) {
                         row[i][0] = list.get(i).getMa();
@@ -134,7 +134,7 @@ public class Mon implements ActionListener {
         JLabel jLabelRight = new JLabel("Bang");
         this.list = monState.view();
 
-        Object[][] row = new Object[list.size()][2];
+        Object[][] row = new Object[list.size()][col.length];
 
         for (int i = 0; i < list.size(); i++) {
             row[i][0] = list.get(i).getMa();
@@ -196,7 +196,7 @@ public class Mon implements ActionListener {
 
     public void renderTable() {
         list = monState.view();
-        Object[][] row = new Object[list.size()][2];
+        Object[][] row = new Object[list.size()][col.length];
 
         for (int i = 0; i < list.size(); i++) {
             row[i][0] = list.get(i).getMa();

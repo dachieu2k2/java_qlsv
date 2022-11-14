@@ -77,7 +77,7 @@ public class Nganh implements ActionListener {
                     renderTable();
                 } else {
                     list = nganhState.SearchText(s);
-                    Object[][] row = new Object[list.size()][3];
+                    Object[][] row = new Object[list.size()][col.length];
 
                     for (int i = 0; i < list.size(); i++) {
                         row[i][0] = list.get(i).getMa();
@@ -153,7 +153,7 @@ public class Nganh implements ActionListener {
         JLabel jLabelRight = new JLabel("Bang");
         this.list = nganhState.view();
 
-        Object[][] row = new Object[list.size()][3];
+        Object[][] row = new Object[list.size()][col.length];
 
         for (int i = 0; i < list.size(); i++) {
             row[i][0] = list.get(i).getMa();
@@ -223,7 +223,7 @@ public class Nganh implements ActionListener {
 
     public void renderTable() {
         list = nganhState.view();
-        Object[][] row = new Object[list.size()][3];
+        Object[][] row = new Object[list.size()][col.length];
 
         for (int i = 0; i < list.size(); i++) {
             row[i][0] = list.get(i).getMa();
