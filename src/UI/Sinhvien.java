@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.event.*;
+import java.sql.Date;
 
 import State.SinhVienState;
 import UI.Components.ComboItem;
@@ -29,12 +30,23 @@ public class Sinhvien implements ActionListener {
 
     // ui
     JTextField jTextFieldTimkiem;
+    // "masv", "tensv", "hosv", "gioitinh", "ngaysinh",
+    // "noisinh","diachi","manganh", "hocbong", "avatar", "tennganh"
     JTextField jTextFieldId;
-    DefaultTableModel model;
-    JTable jTableNganh;
-    JTextField jTextFieldTenNganh;
+    JTextField jTextFieldTenSv;
+    JTextField jTextFieldHoSv;
+    JTextField jTextFieldGioiTinh;
+    JTextField jTextFieldNgaySinh;
+    JTextField jTextFieldNoiSinh;
+    JTextField jTextFieldDiaChi;
+    JTextField jTextFieldMaNganh;
+    JTextField jTextFieldHocBong;
+    JTextField jTextFieldAvatar;
+
     JComboBox<ComboItem> jComboBoxTenKhoa;
 
+    JTable jTableNganh;
+    DefaultTableModel model;
     String[] col = { "masv", "tensv", "hosv", "gioitinh", "ngaysinh", "noisinh",
             "diachi",
             "manganh", "hocbong", "avatar", "tennganh" };
@@ -109,14 +121,40 @@ public class Sinhvien implements ActionListener {
         // left
         JPanel jPanelLeft = new JPanel();
         jPanelLeft.setLayout(new FlowLayout());
-        JLabel jLabelTenNganh = new JLabel("Ten nganh: ");
-        JLabel jLabelTenKhoa = new JLabel("Ten Khoa: ");
+        // "masv", "tensv", "hosv", "gioitinh", "ngaysinh",
+        // "noisinh","diachi","manganh", "hocbong", "avatar", "tennganh"
         JLabel jLabelId = new JLabel("ma: ");
-        jPanelLeft.setPreferredSize(new DimensionUIResource(1200, 50));
+        JLabel jLabeltensv = new JLabel("tensv: ");
+        JLabel jLabelhosv = new JLabel("hosv: ");
+        JLabel jLabelgioitinh = new JLabel("gioitinh: ");
+        JLabel jLabelngaysinh = new JLabel("ngaysinh: ");
+        JLabel jLabelnoisinh = new JLabel("noisinh: ");
+        JLabel jLabeldiachi = new JLabel("diachi: ");
+        JLabel jLabelmanganh = new JLabel("manganh: ");
+        JLabel jLabelhocbong = new JLabel("hocbong: ");
+        JLabel jLabelavatar = new JLabel("avatar: ");
+        JLabel jLabeltennganh = new JLabel("tennganh: ");
+        jPanelLeft.setPreferredSize(new DimensionUIResource(1200, 100));
         jPanelLeft.setBackground(Color.green);
 
-        jTextFieldTenNganh = new JTextField();
-        jTextFieldTenNganh.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldTenSv = new JTextField();
+        jTextFieldTenSv.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldHoSv = new JTextField();
+        jTextFieldHoSv.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldGioiTinh = new JTextField();
+        jTextFieldGioiTinh.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldNgaySinh = new JTextField();
+        jTextFieldNgaySinh.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldNoiSinh = new JTextField();
+        jTextFieldNoiSinh.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldDiaChi = new JTextField();
+        jTextFieldDiaChi.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldMaNganh = new JTextField();
+        jTextFieldMaNganh.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldHocBong = new JTextField();
+        jTextFieldHocBong.setPreferredSize(new DimensionUIResource(200, 20));
+        jTextFieldAvatar = new JTextField();
+        jTextFieldAvatar.setPreferredSize(new DimensionUIResource(200, 20));
 
         jTextFieldId = new JTextField();
         jTextFieldId.setPreferredSize(new DimensionUIResource(200, 20));
@@ -140,11 +178,41 @@ public class Sinhvien implements ActionListener {
         jButtonUpdateSinhvien.addActionListener(this);
         jButtonDeleteSinhvien.addActionListener(this);
 
+        // "masv", "tensv", "hosv", "gioitinh", "ngaysinh",
+        // "noisinh","diachi","manganh", "hocbong", "avatar", "tennganh"
         jPanelLeft.add(jLabelId);
         jPanelLeft.add(jTextFieldId);
-        jPanelLeft.add(jLabelTenNganh);
-        jPanelLeft.add(jTextFieldTenNganh);
-        jPanelLeft.add(jLabelTenKhoa);
+
+        jPanelLeft.add(jLabeltensv);
+        jPanelLeft.add(jTextFieldTenSv);
+
+        jPanelLeft.add(jLabelhosv);
+        jPanelLeft.add(jTextFieldHoSv);
+
+        jPanelLeft.add(jLabelgioitinh);
+        jPanelLeft.add(jTextFieldGioiTinh);
+
+        jPanelLeft.add(jLabelngaysinh);
+        jPanelLeft.add(jTextFieldNgaySinh);
+
+        jPanelLeft.add(jLabelnoisinh);
+        jPanelLeft.add(jTextFieldNoiSinh);
+
+        jPanelLeft.add(jLabeldiachi);
+        jPanelLeft.add(jTextFieldDiaChi);
+
+        jPanelLeft.add(jLabelmanganh);
+        jPanelLeft.add(jTextFieldMaNganh);
+
+        jPanelLeft.add(jLabelhocbong);
+        jPanelLeft.add(jTextFieldHocBong);
+
+        jPanelLeft.add(jLabelavatar);
+        jPanelLeft.add(jTextFieldAvatar);
+
+        // jPanelLeft.add(jLabeltennganh);
+        // jPanelLeft.add(jtext);
+
         jPanelLeft.add(jComboBoxTenKhoa);
 
         jPanelLeft.add(jButtonAddSinhvien);
@@ -199,9 +267,15 @@ public class Sinhvien implements ActionListener {
         String ae = e.getActionCommand();
 
         switch (ae) {
-            case "Them Nganh":
+            case "Them Sinhvien":
                 // sinhVienState.insert(jTextFieldTenNganh.getText(),
                 // ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+
+                sinhVienState.insert(jTextFieldTenSv.getText(), jTextFieldHoSv.getText(),
+                        Integer.parseInt(jTextFieldGioiTinh.getText()), Date.valueOf(jTextFieldNgaySinh.getText()),
+                        jTextFieldNoiSinh.getText(), jTextFieldDiaChi.getText(),
+                        Integer.parseInt(jTextFieldMaNganh.getText()), Integer.parseInt(jTextFieldHocBong.getText()),
+                        jTextFieldAvatar.getText());
 
                 // System.out.println(((ComboItem)
                 // jComboBoxTenKhoa.getSelectedItem()).getValue());
@@ -209,15 +283,22 @@ public class Sinhvien implements ActionListener {
                 renderTable();
                 break;
 
-            case "Xoa Nganh":
+            case "Xoa Sinhvien":
                 sinhVienState.delete(Integer.parseInt(jTextFieldId.getText()));
                 renderTable();
                 resetInput();
 
                 break;
-            case "Cap nhat Nganh":
-                sinhVienState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenNganh.getText(),
-                        ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+            case "Cap nhat Sinhvien":
+                // sinhVienState.update(Integer.parseInt(jTextFieldId.getText()),
+                // jTextFieldTenNganh.getText(),
+                // ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+                sinhVienState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenSv.getText(),
+                        jTextFieldHoSv.getText(),
+                        Integer.parseInt(jTextFieldGioiTinh.getText()), Date.valueOf(jTextFieldNgaySinh.getText()),
+                        jTextFieldNoiSinh.getText(), jTextFieldDiaChi.getText(),
+                        Integer.parseInt(jTextFieldMaNganh.getText()), Integer.parseInt(jTextFieldHocBong.getText()),
+                        jTextFieldAvatar.getText());
 
                 // jTextFieldTenNganh.getText());
                 renderTable();
@@ -232,7 +313,15 @@ public class Sinhvien implements ActionListener {
 
     public void resetInput() {
         jTextFieldId.setText("");
-        // jTextFieldTenNganh.setText("");
+        jTextFieldTenSv.setText("");
+        jTextFieldHoSv.setText("");
+        jTextFieldGioiTinh.setText("");
+        jTextFieldNgaySinh.setText("");
+        jTextFieldNoiSinh.setText("");
+        jTextFieldDiaChi.setText("");
+        jTextFieldMaNganh.setText("");
+        jTextFieldHocBong.setText("");
+        jTextFieldAvatar.setText("");
     }
 
     public void renderTable() {

@@ -14,12 +14,12 @@ public class SinhVienState {
     }
 
     // create
-    public void insert(String tensv, String hosv, boolean gioitinh, Date ngaysinh, String noisinh,
+    public void insert(String tensv, String hosv, int gioitinh, Date ngaysinh, String noisinh,
             String diachi,
-            int manganh, boolean hocbong, String avatar) {
+            int manganh, int hocbong, String avatar) {
         try {
             String insertquery = String.format(
-                    "INSERT INTO sinhvien(tensv,hosv,gioitinh,ngaysinh,noisinh,diachi,manganh,hocbong,avatar) VALUES ('%s','%s','%b','%t','%s','%s','%d','%b','%s')",
+                    "INSERT INTO sinhvien(tensv,hosv,gioitinh,ngaysinh,noisinh,diachi,manganh,hocbong,avatar) VALUES ('%s','%s','%d','%s','%s','%s','%d','%d','%s')",
                     tensv, hosv, gioitinh, ngaysinh, noisinh,
                     diachi,
                     manganh, hocbong, avatar);
@@ -54,10 +54,15 @@ public class SinhVienState {
     }
 
     // update
-    public void update(int id, String tennganh, int makhoa) {
+    public void update(int id, String tensv, String hosv, int gioitinh, Date ngaysinh, String noisinh,
+            String diachi,
+            int manganh, int hocbong, String avatar) {
         try {
-            String insertquery = String.format("UPDATE `nganh` set `tennganh`='%s',`makhoa`='%d' WHERE ma = '%d';",
-                    tennganh, makhoa,
+            String insertquery = String.format(
+                    "UPDATE `sinhvien` set `tensv`='%s',`hosv`='%s',`gioitinh`='%d',`ngaysinh`='%s',`noisinh`='%s',`diachi`='%s',`manganh`='%s',`hocbong`='%d',`avatar`='%s' WHERE masv = '%d';",
+                    tensv, hosv, gioitinh, ngaysinh, noisinh,
+                    diachi,
+                    manganh, hocbong, avatar,
                     id);
             statement.executeUpdate(insertquery);
             System.out.println("Updated");
@@ -69,7 +74,7 @@ public class SinhVienState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `nganh` WHERE ma = '%d'", id);
+            String insertquery = String.format("DELETE FROM `sinhvien` WHERE masv = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -100,4 +105,5 @@ public class SinhVienState {
             return null;
         }
     }
+
 }
