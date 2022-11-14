@@ -62,7 +62,7 @@ public class Sinhvien implements ActionListener {
         jPanelHeader.setLayout(new FlowLayout());
         jPanelHeader.setPreferredSize(new DimensionUIResource(1200, 50));
 
-        JLabel jLabel = new JLabel("Nganh", SwingConstants.CENTER);
+        JLabel jLabel = new JLabel("Sinh vien", SwingConstants.CENTER);
         jLabel.setPreferredSize(new DimensionUIResource(1200, 20));
         JLabel jLabelTimKiem = new JLabel("Tim kiem");
         jTextFieldTimkiem = new JTextField();
