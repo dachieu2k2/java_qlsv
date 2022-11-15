@@ -1,11 +1,14 @@
 package UI;
 
 import java.util.ArrayList;
+import java.util.Properties;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -14,19 +17,26 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
+
+import org.jdatepicker.impl.*;
+
 import java.awt.FlowLayout;
 import java.awt.Color;
 import java.awt.event.*;
 import java.sql.Date;
 
+import State.NganhState;
 import State.SinhVienState;
 import UI.Components.ComboItem;
+import UI.Components.DateLabelFormatter;
+import models.NganhModel;
 import models.SinhVienModel;
 
 public class Sinhvien implements ActionListener {
     // data
     private SinhVienState sinhVienState = new SinhVienState();
     private ArrayList<SinhVienModel> list;
+    private NganhState nganhState = new NganhState();
 
     // ui
     JTextField jTextFieldTimkiem;
@@ -43,7 +53,16 @@ public class Sinhvien implements ActionListener {
     JTextField jTextFieldHocBong;
     JTextField jTextFieldAvatar;
 
-    JComboBox<ComboItem> jComboBoxTenKhoa;
+    JRadioButton jRadioButtonNam;
+    JRadioButton jRadioButtonNu;
+
+    JRadioButton jRadioButtonCo;
+    JRadioButton jRadioButtonKhong;
+
+    JComboBox<ComboItem> jComboBoxTenNganh;
+    UtilDateModel modelDate;
+    JDatePanelImpl datePanel;
+    JDatePickerImpl datePicker;
 
     JTable jTableNganh;
     DefaultTableModel model;
@@ -126,11 +145,28 @@ public class Sinhvien implements ActionListener {
         JLabel jLabelId = new JLabel("ma: ");
         JLabel jLabeltensv = new JLabel("tensv: ");
         JLabel jLabelhosv = new JLabel("hosv: ");
+
         JLabel jLabelgioitinh = new JLabel("gioitinh: ");
+        // JLabel jLabelgioitinhNam = new JLabel("nam: ");
+        // JLabel jLabelgioitinhNu = new JLabel("nu: ");
+        jRadioButtonNam = new JRadioButton("nam");
+        jRadioButtonNu = new JRadioButton("nu");
+
+        jRadioButtonCo = new JRadioButton("Co");
+        jRadioButtonKhong = new JRadioButton("Khong");
+        jRadioButtonKhong.setSelected(true);
+        ButtonGroup groupButtonGioiTinh = new ButtonGroup();
+        ButtonGroup groupButtonhocbong = new ButtonGroup();
+        jRadioButtonNam.setSelected(true);
+        groupButtonGioiTinh.add(jRadioButtonNam);
+        groupButtonGioiTinh.add(jRadioButtonNu);
+        groupButtonhocbong.add(jRadioButtonCo);
+        groupButtonhocbong.add(jRadioButtonKhong);
+
         JLabel jLabelngaysinh = new JLabel("ngaysinh: ");
         JLabel jLabelnoisinh = new JLabel("noisinh: ");
         JLabel jLabeldiachi = new JLabel("diachi: ");
-        JLabel jLabelmanganh = new JLabel("manganh: ");
+        // JLabel jLabelmanganh = new JLabel("manganh: ");
         JLabel jLabelhocbong = new JLabel("hocbong: ");
         JLabel jLabelavatar = new JLabel("avatar: ");
         JLabel jLabeltennganh = new JLabel("tennganh: ");
@@ -156,14 +192,24 @@ public class Sinhvien implements ActionListener {
         jTextFieldAvatar = new JTextField();
         jTextFieldAvatar.setPreferredSize(new DimensionUIResource(200, 20));
 
+        modelDate = new UtilDateModel();
+        // modelDate.setDate(1990, 8, 24);
+        modelDate.setSelected(true);
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+
+        datePanel = new JDatePanelImpl(modelDate, p);
+
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
         jTextFieldId = new JTextField();
         jTextFieldId.setPreferredSize(new DimensionUIResource(200, 20));
 
         JButton jButtonAddSinhvien = new JButton("Them Sinhvien");
         JButton jButtonUpdateSinhvien = new JButton("Cap nhat Sinhvien");
         JButton jButtonDeleteSinhvien = new JButton("Xoa Sinhvien");
-
-        jComboBoxTenKhoa = new JComboBox<>();
 
         // ArrayList<KhoaModel> listKhoa = new ArrayList<>(khoaState.view());
 
@@ -172,8 +218,18 @@ public class Sinhvien implements ActionListener {
         // listKhoa.get(i).getTenKhoa());
         // jComboBoxTenKhoa.addItem(cobo);
         // }
+        jComboBoxTenNganh = new JComboBox<>();
 
-        jComboBoxTenKhoa.addActionListener(this);
+        ArrayList<NganhModel> listNganh = new ArrayList<>(nganhState.view());
+
+        for (int i = 0; i < listNganh.size(); i++) {
+            ComboItem cobo = new ComboItem(listNganh.get(i).getMa(), listNganh.get(i).getTenNganh());
+            jComboBoxTenNganh.addItem(cobo);
+        }
+
+        jComboBoxTenNganh.addActionListener(this);
+
+        jComboBoxTenNganh.addActionListener(this);
         jButtonAddSinhvien.addActionListener(this);
         jButtonUpdateSinhvien.addActionListener(this);
         jButtonDeleteSinhvien.addActionListener(this);
@@ -190,10 +246,15 @@ public class Sinhvien implements ActionListener {
         jPanelLeft.add(jTextFieldHoSv);
 
         jPanelLeft.add(jLabelgioitinh);
-        jPanelLeft.add(jTextFieldGioiTinh);
+        // jPanelLeft.add(jTextFieldGioiTinh);
+        // jPanelLeft.add(jLabelgioitinhNam);
+        jPanelLeft.add(jRadioButtonNam);
+        // jPanelLeft.add(jLabelgioitinhNam);
+        jPanelLeft.add(jRadioButtonNu);
 
         jPanelLeft.add(jLabelngaysinh);
-        jPanelLeft.add(jTextFieldNgaySinh);
+        // jPanelLeft.add(jTextFieldNgaySinh);
+        jPanelLeft.add(datePicker);
 
         jPanelLeft.add(jLabelnoisinh);
         jPanelLeft.add(jTextFieldNoiSinh);
@@ -201,19 +262,22 @@ public class Sinhvien implements ActionListener {
         jPanelLeft.add(jLabeldiachi);
         jPanelLeft.add(jTextFieldDiaChi);
 
-        jPanelLeft.add(jLabelmanganh);
-        jPanelLeft.add(jTextFieldMaNganh);
+        // jPanelLeft.add(jLabelmanganh);
+        jPanelLeft.add(jLabeltennganh);
+        // jPanelLeft.add(jTextFieldMaNganh);
+        jPanelLeft.add(jComboBoxTenNganh);
 
         jPanelLeft.add(jLabelhocbong);
-        jPanelLeft.add(jTextFieldHocBong);
+        // jPanelLeft.add(jTextFieldHocBong);
+
+        jPanelLeft.add(jRadioButtonCo);
+        jPanelLeft.add(jRadioButtonKhong);
 
         jPanelLeft.add(jLabelavatar);
         jPanelLeft.add(jTextFieldAvatar);
 
         // jPanelLeft.add(jLabeltennganh);
         // jPanelLeft.add(jtext);
-
-        jPanelLeft.add(jComboBoxTenKhoa);
 
         jPanelLeft.add(jButtonAddSinhvien);
         jPanelLeft.add(jButtonUpdateSinhvien);
@@ -268,17 +332,22 @@ public class Sinhvien implements ActionListener {
 
         switch (ae) {
             case "Them Sinhvien":
+
                 // sinhVienState.insert(jTextFieldTenNganh.getText(),
-                // ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+                // ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue());
 
                 sinhVienState.insert(jTextFieldTenSv.getText(), jTextFieldHoSv.getText(),
-                        Integer.parseInt(jTextFieldGioiTinh.getText()), Date.valueOf(jTextFieldNgaySinh.getText()),
+                        convertGioiTinh(),
+                        Date.valueOf(datePicker.getJFormattedTextField().getText()),
                         jTextFieldNoiSinh.getText(), jTextFieldDiaChi.getText(),
-                        Integer.parseInt(jTextFieldMaNganh.getText()), Integer.parseInt(jTextFieldHocBong.getText()),
+                        ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue(),
+                        convertHocBong(),
                         jTextFieldAvatar.getText());
 
+                // System.out.println(convertGioiTinh());
+
                 // System.out.println(((ComboItem)
-                // jComboBoxTenKhoa.getSelectedItem()).getValue());
+                // jComboBoxTenNganh.getSelectedItem()).getValue());
                 resetInput();
                 renderTable();
                 break;
@@ -292,12 +361,14 @@ public class Sinhvien implements ActionListener {
             case "Cap nhat Sinhvien":
                 // sinhVienState.update(Integer.parseInt(jTextFieldId.getText()),
                 // jTextFieldTenNganh.getText(),
-                // ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+                // ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue());
                 sinhVienState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenSv.getText(),
                         jTextFieldHoSv.getText(),
-                        Integer.parseInt(jTextFieldGioiTinh.getText()), Date.valueOf(jTextFieldNgaySinh.getText()),
+                        convertGioiTinh(),
+                        Date.valueOf(datePicker.getJFormattedTextField().getText()),
                         jTextFieldNoiSinh.getText(), jTextFieldDiaChi.getText(),
-                        Integer.parseInt(jTextFieldMaNganh.getText()), Integer.parseInt(jTextFieldHocBong.getText()),
+                        ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue(),
+                        convertHocBong(),
                         jTextFieldAvatar.getText());
 
                 // jTextFieldTenNganh.getText());
@@ -345,4 +416,17 @@ public class Sinhvien implements ActionListener {
         jTableNganh.setModel(model);
     }
 
+    int convertGioiTinh() {
+        if (jRadioButtonNam.isSelected()) {
+            return 0;
+        }
+        return 1;
+    }
+
+    int convertHocBong() {
+        if (jRadioButtonCo.isSelected()) {
+            return 1;
+        }
+        return 0;
+    }
 }

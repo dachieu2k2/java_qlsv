@@ -67,9 +67,9 @@ public class SinhVienModel {
     public String getGioiTinh() {
         if (this.gioitinh) {
 
-            return "Nam";
+            return "Nu";
         }
-        return "Nu";
+        return "Nam";
     }
 
     public Boolean getHocBong() {
