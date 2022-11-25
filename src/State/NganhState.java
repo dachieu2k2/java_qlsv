@@ -32,7 +32,7 @@ public class NganhState {
         try {
             ArrayList<NganhModel> nganhList = new ArrayList<>();
 
-            String insertquery = "SELECT * FROM `nganh` INNER JOIN khoa on khoa.ma = nganh.makhoa";
+            String insertquery = "SELECT nganh.ma,nganh.tennganh,nganh.makhoa,khoa.ma,khoa.tenkhoa FROM `nganh` INNER JOIN khoa on khoa.ma = nganh.makhoa where nganh.deleted=0";
             ResultSet result = statement.executeQuery(insertquery);
             while (result.next()) {
                 NganhModel nganh = new NganhModel(result.getInt(1), result.getString(2), result.getInt(3),
@@ -63,7 +63,7 @@ public class NganhState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `nganh` WHERE ma = '%d'", id);
+            String insertquery = String.format("UPDATE `nganh` set `deleted`=1 WHERE ma = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -75,7 +75,7 @@ public class NganhState {
         try {
             ArrayList<NganhModel> nganhList = new ArrayList<>();
             String insertquery = String
-                    .format("SELECT * FROM `nganh` INNER JOIN khoa on khoa.ma = nganh.makhoa WHERE locate('%s',tennganh)",
+                    .format("SELECT nganh.ma,nganh.tennganh,nganh.makhoa,khoa.ma,khoa.tenkhoa FROM `nganh` INNER JOIN khoa on khoa.ma = nganh.makhoa WHERE locate('%s',tennganh) and nganh.deleted=0",
                             s);
             ResultSet result = statement.executeQuery(insertquery);
 

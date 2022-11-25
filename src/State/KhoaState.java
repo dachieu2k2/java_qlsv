@@ -31,7 +31,7 @@ public class KhoaState {
         try {
             ArrayList<KhoaModel> khoaList = new ArrayList<>();
 
-            String insertquery = "select * from `khoa`";
+            String insertquery = "select * from `khoa` where deleted=0";
             ResultSet result = statement.executeQuery(insertquery);
             while (result.next()) {
                 KhoaModel khoa = new KhoaModel(result.getInt(1), result.getString(2));
@@ -60,7 +60,8 @@ public class KhoaState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `khoa` WHERE ma = '%d'", id);
+            // String insertquery = String.format("DELETE FROM `khoa` WHERE ma = '%d'", id);
+            String insertquery = String.format("UPDATE `khoa` set `deleted`=1 WHERE ma = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -72,7 +73,7 @@ public class KhoaState {
         try {
             ArrayList<KhoaModel> khoaList = new ArrayList<>();
             String insertquery = String
-                    .format("SELECT * FROM `khoa` WHERE locate('%s',tenkhoa)",
+                    .format("SELECT * FROM `khoa` WHERE locate('%s',tenkhoa) and deleted=0",
                             s);
             ResultSet result = statement.executeQuery(insertquery);
 

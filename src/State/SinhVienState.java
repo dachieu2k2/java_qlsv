@@ -36,7 +36,7 @@ public class SinhVienState {
         try {
             ArrayList<SinhVienModel> sinhVienList = new ArrayList<>();
 
-            String insertquery = "SELECT * FROM `sinhvien` INNER JOIN nganh on sinhvien.manganh = nganh.ma";
+            String insertquery = "SELECT sinhvien.masv,sinhvien.tensv,sinhvien.hosv,sinhvien.gioitinh,sinhvien.ngaysinh,sinhvien.noisinh,sinhvien.diachi,sinhvien.manganh,sinhvien.hocbong,sinhvien.avatar,nganh.ma,nganh.tennganh,nganh.makhoa FROM `sinhvien` INNER JOIN nganh on sinhvien.manganh = nganh.ma WHERE sinhvien.deleted =0";
             ResultSet result = statement.executeQuery(insertquery);
             while (result.next()) {
                 SinhVienModel sinhvien = new SinhVienModel(result.getInt(1), result.getString(2), result.getString(3),
@@ -74,7 +74,7 @@ public class SinhVienState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `sinhvien` WHERE masv = '%d'", id);
+            String insertquery = String.format("UPDATE `sinhvien` set `deleted`=1 WHERE masv = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -86,7 +86,7 @@ public class SinhVienState {
         try {
             ArrayList<SinhVienModel> sinhVienList = new ArrayList<>();
             String insertquery = String
-                    .format("SELECT * FROM `sinhvien` INNER JOIN nganh on sinhvien.manganh = nganh.ma WHERE locate('%s',tensv)",
+                    .format("SELECT sinhvien.masv,sinhvien.tensv,sinhvien.hosv,sinhvien.gioitinh,sinhvien.ngaysinh,sinhvien.noisinh,sinhvien.diachi,sinhvien.manganh,sinhvien.hocbong,sinhvien.avatar,nganh.ma,nganh.tennganh,nganh.makhoa FROM `sinhvien` INNER JOIN nganh on sinhvien.manganh = nganh.ma WHERE locate('%s',tensv) and sinhvien.deleted=0",
                             s);
             ResultSet result = statement.executeQuery(insertquery);
 

@@ -30,7 +30,7 @@ public class MonState {
         try {
             ArrayList<MonModel> monList = new ArrayList<>();
 
-            String insertquery = "select * from `mon`";
+            String insertquery = "select * from `mon` where deleted =0";
             ResultSet result = statement.executeQuery(insertquery);
             while (result.next()) {
                 MonModel mon = new MonModel(result.getInt(1), result.getString(2));
@@ -59,7 +59,7 @@ public class MonState {
     // delete
     public void delete(int id) {
         try {
-            String insertquery = String.format("DELETE FROM `mon` WHERE ma = '%d'", id);
+            String insertquery = String.format("UPDATE `mon` set `deleted`=1 WHERE ma = '%d'", id);
             statement.executeUpdate(insertquery);
             System.out.println("Deleted");
         } catch (SQLException ex) {
@@ -71,7 +71,7 @@ public class MonState {
         try {
             ArrayList<MonModel> monList = new ArrayList<>();
             String insertquery = String
-                    .format("SELECT * FROM `mon` WHERE locate('%s',tenMon)",
+                    .format("SELECT * FROM `mon` WHERE locate('%s',tenMon) and deleted =0",
                             s);
             ResultSet result = statement.executeQuery(insertquery);
 
