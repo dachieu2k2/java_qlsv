@@ -17,6 +17,7 @@ import State.DiemState;
 import State.MonState;
 import State.SinhVienState;
 import UI.Components.ComboItem;
+import UI.Components.Dialog;
 import models.DiemModel;
 import models.MonModel;
 import models.SinhVienModel;
@@ -44,6 +45,8 @@ public class Diem implements ActionListener {
     JComboBox<ComboItem> jComboBoxTenSinhvien;
 
     String[] col = { "masv", "mamon", "hosv", "tensv", "diem", "tenmon" };
+
+    Dialog d;
 
     public JPanel render() {
 
@@ -206,39 +209,81 @@ public class Diem implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String ae = e.getActionCommand();
-
+        int check = 0;
         switch (ae) {
             case "Them Diem":
-                // diemState.insert(jTextFieldTenNganh.getText(),
-                // ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+                if (Double.parseDouble(jTextFieldDiem.getText()) > 10
+                        || Double.parseDouble(jTextFieldDiem.getText()) < 0) {
+                    d = new Dialog("Diem phai lon hon 0 va nho hon 10");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getMasv() == ((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue()
+                            && list.get(i).getMamon() == ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue()) {
+                        check = 1;
+                        d = new Dialog("Sinh vien da co diem mon nay!");
+                        break;
+                    }
+                }
+                if (check == 1) {
+                    break;
+                } else {
+                    diemState.insert(((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue(),
+                            ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue(),
+                            Double.parseDouble(jTextFieldDiem.getText()));
+                    resetInput();
+                    renderTable();
+                }
 
-                diemState.insert(((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue(),
-                        ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue(),
-                        Double.parseDouble(jTextFieldDiem.getText()));
-                // System.out.println(((ComboItem)
-                // jComboBoxTenKhoa.getSelectedItem()).getValue());
-                resetInput();
-                renderTable();
                 break;
 
             case "Xoa Diem":
-                diemState.delete(((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue(),
-                        ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue());
-                renderTable();
-                resetInput();
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getMasv() == ((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue()
+                            && list.get(i).getMamon() == ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue()) {
+                        diemState.delete(((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue(),
+                                ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue());
+                        renderTable();
+                        resetInput();
+
+                        check = 1;
+                        d = new Dialog("Xoa thanh cong");
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("Khong tim thay sinh vien hoc mon hoc nay");
+                    break;
+                }
 
                 break;
             case "Cap nhat Diem":
-                // diemState.update(Integer.parseInt(jTextFieldId.getText()),
-                // jTextFieldTenNganh.getText(),
-                // ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
-
-                diemState.update(((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue(),
-                        ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue(),
-                        Double.parseDouble(jTextFieldDiem.getText()));
-                // jTextFieldTenNganh.getText());
-                renderTable();
-                resetInput();
+                if (Double.parseDouble(jTextFieldDiem.getText()) > 10
+                        || Double.parseDouble(jTextFieldDiem.getText()) < 0) {
+                    d = new Dialog("Diem phai lon hon 0 va nho hon 10");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).getMasv() == ((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue()
+                            && list.get(i).getMamon() == ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue()) {
+                        diemState.update(((ComboItem) jComboBoxTenSinhvien.getSelectedItem()).getValue(),
+                                ((ComboItem) jComboBoxTenMon.getSelectedItem()).getValue(),
+                                Double.parseDouble(jTextFieldDiem.getText()));
+                        // jTextFieldTenNganh.getText());
+                        renderTable();
+                        resetInput();
+                        check = 1;
+                        d = new Dialog("Xoa thanh cong");
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("Khong tim thay sinh vien hoc mon hoc nay");
+                    break;
+                }
 
                 break;
             default:

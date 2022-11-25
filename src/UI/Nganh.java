@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import State.KhoaState;
 import State.NganhState;
 import UI.Components.ComboItem;
+import UI.Components.Dialog;
 import models.KhoaModel;
 import models.NganhModel;
 
@@ -38,6 +39,7 @@ public class Nganh implements ActionListener {
     JTable jTableNganh;
     JTextField jTextFieldTenNganh;
     JComboBox<ComboItem> jComboBoxTenKhoa;
+    Dialog d;
 
     String[] col = { "ma", "tennganh", "tenkhoa" };
 
@@ -183,31 +185,68 @@ public class Nganh implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String ae = e.getActionCommand();
-
+        int check = 0;
         switch (ae) {
             case "Them Nganh":
-                nganhState.insert(jTextFieldTenNganh.getText(),
-                        ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
 
-                // System.out.println(((ComboItem)
-                // jComboBoxTenKhoa.getSelectedItem()).getValue());
-                resetInput();
-                renderTable();
+                if (jTextFieldTenNganh.getText().equals("")) {
+                    d = new Dialog("Can phai co tennganh");
+                    break;
+
+                } else {
+                    nganhState.insert(jTextFieldTenNganh.getText(),
+                            ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+
+                    // System.out.println(((ComboItem)
+                    // jComboBoxTenKhoa.getSelectedItem()).getValue());
+                    resetInput();
+                    renderTable();
+                    d = new Dialog("Them thanh cong");
+                }
                 break;
 
             case "Xoa Nganh":
-                nganhState.delete(Integer.parseInt(jTextFieldId.getText()));
-                renderTable();
-                resetInput();
+                if (jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMa()) {
+                        nganhState.delete(Integer.parseInt(jTextFieldId.getText()));
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Xoa thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
 
                 break;
             case "Cap nhat Nganh":
-                nganhState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenNganh.getText(),
-                        ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
+                if (jTextFieldTenNganh.getText().equals("") || jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co tennganh,id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMa()) {
+                        nganhState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenNganh.getText(),
+                                ((ComboItem) jComboBoxTenKhoa.getSelectedItem()).getValue());
 
-                // jTextFieldTenNganh.getText());
-                renderTable();
-                resetInput();
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Cap nhat thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
 
                 break;
             default:
@@ -218,7 +257,7 @@ public class Nganh implements ActionListener {
 
     public void resetInput() {
         jTextFieldId.setText("");
-        // jTextFieldTenNganh.setText("");
+        jTextFieldTenNganh.setText("");
     }
 
     public void renderTable() {

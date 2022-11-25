@@ -13,6 +13,7 @@ import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
 import State.MonState;
+import UI.Components.Dialog;
 import models.MonModel;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Mon implements ActionListener {
     DefaultTableModel model;
     JTable jTableMon;
     String[] col = { "ma", "tenmon" };
+    Dialog d;
 
     Mon() {
 
@@ -162,27 +164,63 @@ public class Mon implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String ae = e.getActionCommand();
-        System.out.println(ae);
+        int check = 0;
         switch (ae) {
             case "Them Mon":
-                monState.insert(jTextFieldTenMon.getText());
+                if (jTextFieldTenMon.getText().equals("")) {
+                    d = new Dialog("Can phai co ten mon");
+                    break;
 
-                resetInput();
-                renderTable();
+                } else {
+                    monState.insert(jTextFieldTenMon.getText());
+
+                    resetInput();
+                    renderTable();
+                    d = new Dialog("Them thanh cong");
+                }
+
                 break;
 
             case "Xoa Mon":
-                monState.delete(Integer.parseInt(jTextFieldId.getText()));
-                renderTable();
-                resetInput();
+                if (jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMa()) {
+                        monState.delete(Integer.parseInt(jTextFieldId.getText()));
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Xoa thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
 
                 break;
             case "Cap nhat Mon":
-
-                monState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenMon.getText());
-                renderTable();
-                resetInput();
-
+                if (jTextFieldTenMon.getText().equals("") || jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co ten mon ,id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMa()) {
+                        monState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenMon.getText());
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Cap nhat thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
                 break;
             default:
                 break;

@@ -13,6 +13,7 @@ import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
 import State.KhoaState;
+import UI.Components.Dialog;
 import models.KhoaModel;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Khoa implements ActionListener {
     DefaultTableModel model;
     JTable jTableKhoa;
     String[] col = { "ma", "tenkhoa" };
+    Dialog d;
 
     Khoa() {
 
@@ -164,26 +166,61 @@ public class Khoa implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String ae = e.getActionCommand();
-
+        int check = 0;
         switch (ae) {
             case "Them khoa":
-                khoaState.insert(jTextFieldTenKhoa.getText());
 
-                resetInput();
-                renderTable();
+                if (jTextFieldTenKhoa.getText().equals("")) {
+                    d = new Dialog("Can phai co ten khoa");
+                    break;
+                } else {
+                    khoaState.insert(jTextFieldTenKhoa.getText());
+                    resetInput();
+                    renderTable();
+                    d = new Dialog("Them thanh cong");
+                }
                 break;
 
             case "Xoa khoa":
-                khoaState.delete(Integer.parseInt(jTextFieldId.getText()));
-                renderTable();
-                resetInput();
+                if (jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMa()) {
+                        khoaState.delete(Integer.parseInt(jTextFieldId.getText()));
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Xoa thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
 
                 break;
             case "Cap nhat khoa":
-
-                khoaState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenKhoa.getText());
-                renderTable();
-                resetInput();
+                if (jTextFieldTenKhoa.getText().equals("") || jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co ten khoa,id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMa()) {
+                        khoaState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenKhoa.getText());
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Cap nhat thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
 
                 break;
             default:

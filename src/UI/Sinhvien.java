@@ -29,6 +29,7 @@ import State.NganhState;
 import State.SinhVienState;
 import UI.Components.ComboItem;
 import UI.Components.DateLabelFormatter;
+import UI.Components.Dialog;
 import models.NganhModel;
 import models.SinhVienModel;
 
@@ -69,6 +70,8 @@ public class Sinhvien implements ActionListener {
     String[] col = { "masv", "tensv", "hosv", "gioitinh", "ngaysinh", "noisinh",
             "diachi",
             "manganh", "hocbong", "avatar", "tennganh" };
+
+    Dialog d;
 
     public JPanel render() {
 
@@ -329,12 +332,13 @@ public class Sinhvien implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         String ae = e.getActionCommand();
-
+        int check = 0;
         switch (ae) {
             case "Them Sinhvien":
-
-                // sinhVienState.insert(jTextFieldTenNganh.getText(),
-                // ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue());
+                if (jTextFieldTenSv.getText().equals("") || jTextFieldHoSv.getText().equals("")) {
+                    d = new Dialog("Can phai co ten sinh vien va ho sinh vien");
+                    break;
+                }
 
                 sinhVienState.insert(jTextFieldTenSv.getText(), jTextFieldHoSv.getText(),
                         convertGioiTinh(),
@@ -344,37 +348,64 @@ public class Sinhvien implements ActionListener {
                         convertHocBong(),
                         jTextFieldAvatar.getText());
 
-                // System.out.println(convertGioiTinh());
-
-                // System.out.println(((ComboItem)
-                // jComboBoxTenNganh.getSelectedItem()).getValue());
                 resetInput();
                 renderTable();
                 break;
 
             case "Xoa Sinhvien":
-                sinhVienState.delete(Integer.parseInt(jTextFieldId.getText()));
-                renderTable();
-                resetInput();
+                if (jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co id");
+                    break;
+                }
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMasv()) {
+                        sinhVienState.delete(Integer.parseInt(jTextFieldId.getText()));
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Xoa thanh cong");
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
 
                 break;
             case "Cap nhat Sinhvien":
-                // sinhVienState.update(Integer.parseInt(jTextFieldId.getText()),
-                // jTextFieldTenNganh.getText(),
-                // ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue());
-                sinhVienState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenSv.getText(),
-                        jTextFieldHoSv.getText(),
-                        convertGioiTinh(),
-                        Date.valueOf(datePicker.getJFormattedTextField().getText()),
-                        jTextFieldNoiSinh.getText(), jTextFieldDiaChi.getText(),
-                        ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue(),
-                        convertHocBong(),
-                        jTextFieldAvatar.getText());
+                if (jTextFieldId.getText().equals("")) {
+                    d = new Dialog("Can phai co id");
+                    break;
+                }
+                if (jTextFieldTenSv.getText().equals("") || jTextFieldHoSv.getText().equals("")) {
+                    d = new Dialog("Can phai co ten sinh vien va ho sinh vien");
+                    break;
+                }
 
-                // jTextFieldTenNganh.getText());
-                renderTable();
-                resetInput();
+                check = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (Integer.parseInt(jTextFieldId.getText()) == list.get(i).getMasv()) {
+                        sinhVienState.update(Integer.parseInt(jTextFieldId.getText()), jTextFieldTenSv.getText(),
+                                jTextFieldHoSv.getText(),
+                                convertGioiTinh(),
+                                Date.valueOf(datePicker.getJFormattedTextField().getText()),
+                                jTextFieldNoiSinh.getText(), jTextFieldDiaChi.getText(),
+                                ((ComboItem) jComboBoxTenNganh.getSelectedItem()).getValue(),
+                                convertHocBong(),
+                                jTextFieldAvatar.getText());
 
+                        renderTable();
+                        resetInput();
+                        d = new Dialog("Cap nhat thanh cong");
+
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check == 0) {
+                    d = new Dialog("khong tim thay id");
+                }
                 break;
             default:
                 break;
