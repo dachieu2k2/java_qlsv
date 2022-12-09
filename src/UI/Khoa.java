@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -147,6 +148,19 @@ public class Khoa implements ActionListener {
         jTableKhoa = new JTable(model);
 
         jTableKhoa.setBounds(30, 40, 200, 300);
+        jTableKhoa.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTableKhoa.rowAtPoint(evt.getPoint());
+                int col = jTableKhoa.columnAtPoint(evt.getPoint());
+                if (row >= 0 && col >= 0) {
+                    jTextFieldId.setText(model.getValueAt(row, 0).toString());
+                    jTextFieldTenKhoa.setText(model.getValueAt(row, 1).toString());
+
+                }
+            }
+        });
+
         jTableKhoa.setEnabled(false);
 
         JScrollPane jScrollPane = new JScrollPane(jTableKhoa);

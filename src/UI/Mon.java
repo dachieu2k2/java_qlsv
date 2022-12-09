@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -146,6 +147,18 @@ public class Mon implements ActionListener {
         jTableMon = new JTable(model);
 
         jTableMon.setBounds(30, 40, 200, 300);
+        jTableMon.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTableMon.rowAtPoint(evt.getPoint());
+                int col = jTableMon.columnAtPoint(evt.getPoint());
+                if (row >= 0 && col >= 0) {
+                    jTextFieldId.setText(model.getValueAt(row, 0).toString());
+                    jTextFieldTenMon.setText(model.getValueAt(row, 1).toString());
+
+                }
+            }
+        });
         jTableMon.setEnabled(false);
 
         JScrollPane jScrollPane = new JScrollPane(jTableMon);

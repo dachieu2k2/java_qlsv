@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -190,6 +191,34 @@ public class Diem implements ActionListener {
         jTableNganh = new JTable(model);
 
         jTableNganh.setBounds(30, 40, 200, 300);
+        jTableNganh.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTableNganh.rowAtPoint(evt.getPoint());
+                int col = jTableNganh.columnAtPoint(evt.getPoint());
+                if (row >= 0 && col >= 0) {
+
+                    for (int i = 0; i < lisSinhVien.size(); i++) {
+                        if (jComboBoxTenSinhvien.getItemAt(i).getValue() == Integer
+                                .parseInt(model.getValueAt(row, 0).toString())) {
+                            jComboBoxTenSinhvien.setSelectedIndex(i);
+                            break;
+                        }
+
+                    }
+
+                    for (int i = 0; i < listMon.size(); i++) {
+                        if (jComboBoxTenMon.getItemAt(i).getValue() == Integer
+                                .parseInt(model.getValueAt(row, 1).toString())) {
+                            jComboBoxTenMon.setSelectedIndex(i);
+                            break;
+                        }
+
+                    }
+                    jTextFieldDiem.setText(model.getValueAt(row, 4).toString());
+                }
+            }
+        });
         jTableNganh.setEnabled(false);
 
         JScrollPane jScrollPane = new JScrollPane(jTableNganh);

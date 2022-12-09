@@ -10,6 +10,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -166,6 +167,27 @@ public class Nganh implements ActionListener {
         jTableNganh = new JTable(model);
 
         jTableNganh.setBounds(30, 40, 200, 300);
+        jTableNganh.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTableNganh.rowAtPoint(evt.getPoint());
+                int col = jTableNganh.columnAtPoint(evt.getPoint());
+                if (row >= 0 && col >= 0) {
+                    jTextFieldId.setText(model.getValueAt(row, 0).toString());
+                    jTextFieldTenNganh.setText(model.getValueAt(row, 1).toString());
+                    int maKhoa = listKhoa.stream()
+                            .filter(carnet -> model.getValueAt(row, 2).toString().equals(carnet.getTenKhoa()))
+                            .findFirst().orElse(listKhoa.get(0)).getMa();
+                    for (int i = 0; i < listKhoa.size(); i++) {
+                        if (jComboBoxTenKhoa.getItemAt(i).getValue() == maKhoa) {
+                            jComboBoxTenKhoa.setSelectedIndex(i);
+                            break;
+                        }
+
+                    }
+                }
+            }
+        });
         jTableNganh.setEnabled(false);
 
         JScrollPane jScrollPane = new JScrollPane(jTableNganh);

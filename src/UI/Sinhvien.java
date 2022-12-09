@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.MouseInputAdapter;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.table.DefaultTableModel;
 
@@ -313,6 +314,44 @@ public class Sinhvien implements ActionListener {
         jTableNganh = new JTable(model);
 
         jTableNganh.setBounds(30, 40, 200, 300);
+        jTableNganh.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTableNganh.rowAtPoint(evt.getPoint());
+                int col = jTableNganh.columnAtPoint(evt.getPoint());
+                if (row >= 0 && col >= 0) {
+                    jTextFieldId.setText(model.getValueAt(row, 0).toString());
+                    jTextFieldTenSv.setText(model.getValueAt(row, 1).toString());
+                    jTextFieldHoSv.setText(model.getValueAt(row, 2).toString());
+                    if (model.getValueAt(row, 3).toString().equals("Nam")) {
+                        jRadioButtonNam.setSelected(true);
+                    } else {
+                        jRadioButtonNu.setSelected(true);
+
+                    }
+                    datePicker.getJFormattedTextField().setText(model.getValueAt(row, 4).toString());
+                    jTextFieldNoiSinh.setText(model.getValueAt(row, 5).toString());
+                    jTextFieldDiaChi.setText(model.getValueAt(row, 6).toString());
+
+                    for (int i = 0; i < listNganh.size(); i++) {
+                        if (jComboBoxTenNganh.getItemAt(i).getValue() == Integer.parseInt(model.getValueAt(row,
+                                7).toString())) {
+                            jComboBoxTenNganh.setSelectedIndex(i);
+                            break;
+                        }
+
+                    }
+                    if (model.getValueAt(row, 8).toString().equals("true")) {
+                        jRadioButtonCo.setSelected(true);
+                    } else {
+                        jRadioButtonKhong.setSelected(true);
+
+                    }
+                    jTextFieldAvatar.setText(model.getValueAt(row, 9).toString());
+
+                }
+            }
+        });
         jTableNganh.setEnabled(false);
 
         JScrollPane jScrollPane = new JScrollPane(jTableNganh);
